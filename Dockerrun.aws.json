@@ -1,0 +1,48 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "volumes": [
+    {
+      "name": "nginxconf",
+      "host": {
+        "sourcePath": "/var/app/current/docker/production/nginx/conf"
+      }
+    },
+    {
+      "name": "siteroot",
+      "host": {
+        "sourcePath": "/var/app/current/siteroot"
+      }
+    }					          
+  ],
+  "containerDefinitions": [
+    {
+      "name": "bookshelf-nginx",
+      "image": "nginx:1.9.2",
+      "environment": [
+        {
+          "name": "Container",
+          "value": "nginx"
+        }
+      ],
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "essential": true,
+      "memory": 128,
+      "mountPoints": [
+        {
+          "sourceVolume": "nginxconf",
+          "containerPath": "/etc/nginx",
+          "readOnly": true
+        },
+	{ "sourceVolume": "siteroot",
+	  "containerPath": "/usr/share/nginx/html",
+	  "readOnly": true
+	}
+      ]
+    }
+  ]
+}
